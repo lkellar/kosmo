@@ -28,7 +28,7 @@ f.addEyebrow('right', 8)
 f.addMouth(10, yMin=0)
 ```
 
-#### kosmo.Face()
+### kosmo.Face()
 Parameters: None
 
 Once parts are added, they can be referenced via the following variables
@@ -38,7 +38,7 @@ Once parts are added, they can be referenced via the following variables
 * `leftEyebrow`
 * `rightEyebrow`
 
-##### addPart()
+### addPart()
 Adds a part to the Face. Good for programmatically adding parts.
 
 Required Parameters:
@@ -54,7 +54,7 @@ Acceptable "types" are "eye", "mouth", and "eyebrow"
   }
 ```
 
-##### addEye()
+### addEye()
 Adds an [Eye](#eye) instance to the Face
 
 Required Parameters:
@@ -69,7 +69,7 @@ Optional Parameters:
 * `yMax` (float): the minimum angle of the Y Axis
 
 
-##### addMouth()
+### addMouth()
 Adds a [Mouth](#mouth) instance to the Face
 
 Required Parameters:
@@ -80,7 +80,7 @@ Optional Parameters:
 * `yMax` (float): The maximum angle of the Y Axis
 
 
-##### addEyebrow()
+### addEyebrow()
 Adds a [Eyebrow](#eyebrow) instance to the Face
 
 
@@ -92,9 +92,9 @@ Optional Parameters:
 * `yMin` (float): The minimum angle of the Y Axis
 * `yMax` (float): The maximum angle of the Y Axis
 
-#### Face Part Classes
+## Face Part Classes
 
-##### Eye
+### Eye
 
 Required Parameters:
 * `side` (string): Designates which eye to be controlled. Only "left" or "right" is a valid parameter.
@@ -114,7 +114,7 @@ Available Functions:
 * `x.min() or y.min()`: Sets the corresponding servo's angle to the mid point.
 * `x.mid() or y.mid()`: Sets the corresponding servo's angle to the midpoint.
 
-##### Mouth
+####Mouth
 
 Required Parameters:
 * `pin` (int): The GPIO pin where the servo controlling the mouth resides.
@@ -128,7 +128,7 @@ Available Functions:
 * `close()`: Closes the mouth servo to the minimum angle
 * `setY(angle: float)`: Pass a float between yMin and yMax to set the Y angle
 
-##### Eyebrow
+### Eyebrow
 
 Required Parameters:
 * `side` (string): Designates which eyebrow to be controlled. Only "left" or "right" is a valid parameter.
@@ -143,7 +143,7 @@ Available Functions:
 * `min()`: Sets the eyebrow servo to the minimum angle
 * `setY(angle: float)` Pass a float between yMin and yMax to set the Y angle.
 
-#### Servo Calibration
+## Servo Calibration
 Any servo motor can be directly accessed via syntax like `myFace.leftEye.x` or `myFace.mouth.y`
 
 All servo motors have a calibrate function, which moves the servo to the zero position, and waits for a person to externally tune the servo. It then cycles through Max angle, Mid angle, Min angle, and Zero again.
