@@ -114,7 +114,7 @@ Available Functions:
 * `x.min() or y.min()`: Sets the corresponding servo's angle to the mid point.
 * `x.mid() or y.mid()`: Sets the corresponding servo's angle to the midpoint.
 
-####Mouth
+### Mouth
 
 Required Parameters:
 * `pin` (int): The GPIO pin where the servo controlling the mouth resides.
