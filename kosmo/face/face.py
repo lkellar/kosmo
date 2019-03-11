@@ -48,3 +48,7 @@ class Face:
             self.rightEyebrow = Eyebrow(**args)
         else:
             raise TypeError('Side must be "left" or "right"!')
+
+    def fetchParts(self):
+        # This function returns all the face parts that have been defined
+        return vars(self)

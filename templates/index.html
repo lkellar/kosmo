@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kosmo Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename="style.css") }}">
+</head>
+{% macro servoDetails(servo, axis) %}
+    <div>
+        <h3>{{ axis|upper }} Axis</h3>
+        <p><strong>Current Angle:</strong> {{ servo.getAngle() }}</p>
+        <p><strong>Pin:</strong> {{ servo.s.pin }}</p>
+    </div>
+{%- endmacro %}
+<body>
+<main>
+    <h1>Kosmo Dashboard</h1>
+    {% if face.fetchParts()|length == 0 %}
+        <div class="surround">
+            <h2>No Parts Created Yet</h2>
+        </div>
+    {% else %}
+        {% for key, value in face.fetchParts().items() %}
+            <div class="surround">
+                <h2>{{ key }}</h2>
+                <div class="details">
+                    {{ servoDetails(value.y, 'y')}}
+                    {% if value.x is defined %}
+                        {{ servoDetails(value.x, 'x')}}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</main>
+</body>
+</html>

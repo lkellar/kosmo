@@ -1,10 +1,16 @@
 from gpiozero import AngularServo
 from time import sleep
 
+from os import environ
 
 class BaseServo:
     def __init__(self, pin: int, angMin: float = -90, angMax: float = 90):
-        self.s = AngularServo(pin, initial_angle=0)
+        if environ['development'] == '1':
+            # This creates a mock servo, for simulating controls and testing,
+            # without having to use the Raspberry Pi every time
+            self.s = DevAngularServo(pin, initial_angle=0)
+        else:
+            self.s = AngularServo(pin, initial_angle=0)
         self.angMax = angMax
         self.angMin = angMin
 
@@ -22,7 +28,10 @@ class BaseServo:
         self.s.angle = self.angMin
 
     def mid(self):
-        self.s.mid()
+        self.s.angle = (self.angMax + self.angMin) / 2
+
+    def getAngle(self):
+        return self.s.angle
 
     def calibrate(self):
         print('Moving to Zero')
@@ -47,3 +56,9 @@ class BaseServo:
         self.s.angle = 0
         sleep(2)
 
+
+# A fake Angular Servo that doesn't actually connect to GPIO for testing purposes
+class DevAngularServo:
+    def __init__(self, pin: int, initial_angle: float = 0):
+        self.pin = pin
+        self.angle = initial_angle
