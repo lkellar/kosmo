@@ -7,13 +7,13 @@ app = Flask(__name__, static_folder='../static', static_url_path='/static',
             template_folder='../templates')
 
 f = Face()
+currentDir = path.dirname(path.realpath(__file__))
+configPath = path.join(currentDir, '../', 'config.json')
 
 
 @app.before_first_request
 def initFace():
     # Checks to see if a config.json exists, and if so, creates a bot from it
-    currentDir = path.dirname(path.realpath(__file__))
-    configPath = path.join(currentDir, '../', 'config.json')
     if path.exists(configPath):
         print('Config Found! Creating Face from config')
 
@@ -57,8 +57,16 @@ def controlParts():
     else:
         processCommand(commands)
 
-
     return '200 OK'
+
+
+@app.route('/save')
+def saveConfig():
+    config = [i.getConfig() for i in f.fetchParts().values()]
+    with open(configPath, 'w') as file:
+        json.dump(config, file)
+
+    return jsonify(config)
 
 
 def processCommand(command: dict):

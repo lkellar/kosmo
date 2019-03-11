@@ -17,3 +17,6 @@ class Mouth:
 
     def setY(self, angle: float):
         self.y.setPosition(angle)
+
+    def getConfig(self):
+        return {'part': 'mouth', 'pin': self.y.pin, 'yMin': self.yMin, 'yMax': self.yMax}

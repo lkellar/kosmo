@@ -24,7 +24,6 @@ class Face:
     def addEye(self, side: str, xPin: int, yPin: int, xMin: float = Eye.xMin, xMax: float = Eye.xMax,
                  yMin: float = Eye.yMin, yMax: float = Eye.yMax):
         args = locals()
-        del args['side']
         del args['self']
         if side == 'left':
             self.leftEye = Eye(**args)
@@ -40,7 +39,6 @@ class Face:
 
     def addEyebrow(self, side: str, pin: int, yMin: float = Eyebrow.yMin, yMax: float = Eyebrow.yMax):
         args = locals()
-        del args['side']
         del args['self']
         if side == 'left':
             self.leftEyebrow = Eyebrow(**args)
