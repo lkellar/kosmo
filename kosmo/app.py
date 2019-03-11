@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from .face import Face
+from face import Face
 from os import path
 import json
 

@@ -5,7 +5,7 @@ from os import environ
 
 class BaseServo:
     def __init__(self, pin: int, angMin: float = -90, angMax: float = 90):
-        if environ['development'] == '1':
+        if environ.get('development') == '1':
             # This creates a mock servo, for simulating controls and testing,
             # without having to use the Raspberry Pi every time
             self.s = DevAngularServo(pin, initial_angle=0)
