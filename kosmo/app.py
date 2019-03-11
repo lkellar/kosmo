@@ -1,5 +1,5 @@
-from flask import Flask, request, render_template
-from face import Face
+from flask import Flask, request, render_template, jsonify
+from kosmo.face import Face
 from os import path
 import json
 
@@ -26,6 +26,7 @@ def initFace():
     else:
         print('No config found, an empty face has been created')
 
+
 @app.route('/')
 def index():
     return render_template('index.html', face=f)
@@ -44,6 +45,61 @@ def addParts():
         f.addPart(config)
 
     return '200 OK'
+
+
+@app.route('/control', methods=['POST'])
+def controlParts():
+    commands = request.get_json()
+
+    if type(commands) == list:
+        for i in commands:
+            processCommand(i)
+    else:
+        processCommand(commands)
+
+
+    return '200 OK'
+
+
+def processCommand(command: dict):
+    part = f.fetchParts()[command['part']]
+    if command['axis'].lower() == 'x':
+        servo = part.x
+    elif command['axis'].lower() == 'y':
+        servo = part.y
+    else:
+        raise InvalidUsage("Axis must be 'X' or 'Y'")
+
+    if command['cmd'] in ['mid', 'max', 'min']:
+        getattr(servo, command['cmd'])()
+    elif command['cmd'] == 'set':
+        servo.setPosition(command['angle'])
+    else:
+        raise InvalidUsage("cmd must be 'mid', 'max', 'min' or 'set'!")
+
+
+class InvalidUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
 
 if __name__ == '__main__':
     app.run()

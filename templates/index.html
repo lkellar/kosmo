@@ -10,6 +10,8 @@
         <h3>{{ axis|upper }} Axis</h3>
         <p><strong>Current Angle:</strong> {{ servo.getAngle() }}</p>
         <p><strong>Pin:</strong> {{ servo.pin }}</p>
+        <p><strong>Maximum Angle:</strong> {{servo.angMax }}</p>
+        <p><strong>Minimum Angle:</strong> {{ servo.angMin }}</p>
     </div>
 {%- endmacro %}
 <body>
