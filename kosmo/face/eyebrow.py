@@ -20,4 +20,4 @@ class Eyebrow:
         self.y.setPosition(angle)
 
     def getConfig(self):
-        return {'side': self.side, 'part': 'eyebrow', 'pin': self.y.pin, 'yMin': self.yMin, 'yMax': self.yMax}
+        return {'side': self.side, 'part': 'eyebrow', 'pin': self.y.pin, 'yMin': self.y.angMin, 'yMax': self.y.angMax}

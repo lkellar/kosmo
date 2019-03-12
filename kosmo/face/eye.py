@@ -21,5 +21,5 @@ class Eye:
         self.y.setPosition(angle)
 
     def getConfig(self):
-        return {'side': self.side, 'part': 'eye', 'xPin': self.x.pin, 'yPin': self.y.pin, 'xMin': self.xMin,
-                'xMax': self.xMax, 'yMin': self.yMin, 'yMax': self.yMax}
+        return {'side': self.side, 'part': 'eye', 'xPin': self.x.pin, 'yPin': self.y.pin, 'xMin': self.x.angMin,
+                'xMax': self.x.angMax, 'yMin': self.y.angMin, 'yMax': self.y.angMax}

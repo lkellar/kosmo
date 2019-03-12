@@ -49,7 +49,10 @@ def addParts():
 
 @app.route('/control', methods=['POST'])
 def controlParts():
-    commands = request.get_json()
+    if request.is_json:
+        commands = request.get_json()
+    else:
+        commands = request.form
 
     if type(commands) == list:
         for i in commands:
@@ -81,7 +84,7 @@ def processCommand(command: dict):
     if command['cmd'] in ['mid', 'max', 'min']:
         getattr(servo, command['cmd'])()
     elif command['cmd'] == 'set':
-        servo.setPosition(command['angle'])
+        servo.setPosition(float(command['angle']))
     else:
         raise InvalidUsage("cmd must be 'mid', 'max', 'min' or 'set'!")
 
