@@ -20,11 +20,8 @@ function submitForm(formId, cmd='set') {
 function updateAngles(angles) {
 
     for (const [key, value] of Object.entries(angles)) {
-        console.log({key});
-        console.log({value})
         for (const [axis, angle] of Object.entries(value)) {
-            console.log(`${key}-${axis}-angle`)
-            const angleInput = document.getElementById(`${key}-${axis}-angle`)
+            const angleInput = document.getElementById(`${key}-${axis}-angle`);
             angleInput.value = angle;
         }
     }

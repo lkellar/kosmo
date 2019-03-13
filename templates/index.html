@@ -32,7 +32,7 @@
             <h2>No Parts Created Yet</h2>
         </div>
     {% else %}
-        {% for key, value in face.fetchParts().items() %}
+        {% for key, value in PartSorter(face.fetchParts()) %}
             <div class="surround" id="{{ key }}">
                 <h2>{{ key }}</h2>
                 <div class="details">

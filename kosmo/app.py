@@ -22,14 +22,13 @@ def initFace():
 
         for i in config:
             f.addPart(i)
-
     else:
         print('No config found, an empty face has been created')
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', face=f)
+    return render_template('index.html', face=f, PartSorter=PartSorter)
 
 
 @app.route('/add', methods=['POST'])
@@ -87,6 +86,30 @@ def processCommand(command: dict):
         servo.setPosition(float(command['angle']))
     else:
         raise InvalidUsage("cmd must be 'mid', 'max', 'min' or 'set'!")
+
+
+class PartSorter:
+    # This iterator puts the parts in order on the dashboard, so rightEye isn't on the left of leftEye for example.
+    def __init__(self, parts):
+        self.parts = parts
+        # This is the proper alignment for the parts
+        self.alignment = ['leftEye', 'rightEye', 'leftEyebrow', 'rightEyebrow', 'mouth']
+        self.current = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current >= len(self.alignment):
+            raise StopIteration
+        else:
+            name = self.alignment[self.current]
+            part = self.parts.get(name)
+            self.current += 1
+            if not part:
+                return self.__next__()
+            else:
+                return name, part
 
 
 class InvalidUsage(Exception):

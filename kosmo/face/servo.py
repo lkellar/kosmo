@@ -3,6 +3,7 @@ from time import sleep
 
 from os import environ
 
+
 class BaseServo:
     def __init__(self, pin: int, angMin: float = -90, angMax: float = 90):
         self.pin = pin
@@ -17,8 +18,7 @@ class BaseServo:
 
     def setPosition(self, angle: float):
         if angle > self.angMax or angle < self.angMin:
-            raise ValueError('Angle out of range. Stay between {} and {}'.
-                             format(self.angMin, self.angMax))
+            raise ValueError('Angle out of range. Stay between {} and {}'.format(self.angMin, self.angMax))
 
         self.s.angle = angle
 
