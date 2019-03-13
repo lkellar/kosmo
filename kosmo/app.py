@@ -60,7 +60,7 @@ def controlParts():
     else:
         processCommand(commands)
 
-    return '200 OK'
+    return jsonify({key: value.getAngles() for key, value in f.fetchParts().items()})
 
 
 @app.route('/save')

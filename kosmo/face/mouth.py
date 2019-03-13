@@ -20,3 +20,6 @@ class Mouth:
 
     def getConfig(self):
         return {'part': 'mouth', 'pin': self.y.pin, 'yMin': self.y.angMin, 'yMax': self.y.angMax}
+
+    def getAngles(self):
+        return {'y': self.y.getAngle()}

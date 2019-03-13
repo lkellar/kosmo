@@ -38,13 +38,11 @@ h1 {
 
 button {
     padding: 6% 3%;
-    margin: auto 0;
-    width: 30%;
-    font-size: 5vh;
+    margin: 0 auto;
+    width: 27%;
     text-align: center;
     border-radius: 20px;
     background-color: rgb(237, 237, 237);
-    min-height: fit-content;
 }
 
 @media only screen and (orientation: portrait) {
@@ -63,6 +61,16 @@ button {
 
     .details > div {
         width: 92% !important;
+    }
+
+    button {
+        font-size: 3vh;
+    }
+
+    .angle {
+        height: 2vh;
+        width: 7vw;
+        font-size: xx-large;
     }
 }
 

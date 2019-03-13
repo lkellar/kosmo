@@ -21,3 +21,6 @@ class Eyebrow:
 
     def getConfig(self):
         return {'side': self.side, 'part': 'eyebrow', 'pin': self.y.pin, 'yMin': self.y.angMin, 'yMax': self.y.angMax}
+
+    def getAngles(self):
+        return {'y': self.y.getAngle()}
