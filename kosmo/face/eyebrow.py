@@ -20,7 +20,9 @@ class Eyebrow:
         self.y.setPosition(angle)
 
     def getConfig(self):
+        # A function that exposes all the values of the class, so the configuration can be saved and replicated
         return {'side': self.side, 'part': 'eyebrow', 'pin': self.y.pin, 'yMin': self.y.angMin, 'yMax': self.y.angMax}
 
     def getAngles(self):
+        # Returns the angles of all servos for displaying on the dashboard
         return {'y': self.y.getAngle()}

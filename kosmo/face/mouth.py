@@ -2,10 +2,9 @@ from .servo import BaseServo
 
 
 class Mouth:
-    yMin = 0
-    yMax = 50
+    yMin = -80
+    yMax = 0
 
-    # The AngMin and AngMax have not been finalized, just placeholders
     def __init__(self, pin: int, yMin: float = yMin, yMax: float = yMax):
         self.y = BaseServo(pin, yMin, yMax)
 
@@ -19,7 +18,9 @@ class Mouth:
         self.y.setPosition(angle)
 
     def getConfig(self):
+        # A function that exposes all the values of the class, so the configuration can be saved and replicated
         return {'part': 'mouth', 'pin': self.y.pin, 'yMin': self.y.angMin, 'yMax': self.y.angMax}
 
     def getAngles(self):
+        # Returns the angles of all servos for displaying on the dashboard
         return {'y': self.y.getAngle()}

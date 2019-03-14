@@ -18,6 +18,7 @@ class BaseServo:
 
     def setPosition(self, angle: float):
         if angle > self.angMax or angle < self.angMin:
+            # If the angle is invalid, that's a problem, so an erorr is thrown
             raise ValueError('Angle out of range. Stay between {} and {}'.format(self.angMin, self.angMax))
 
         self.s.angle = angle
@@ -31,10 +32,13 @@ class BaseServo:
     def mid(self):
         self.s.angle = (self.angMax + self.angMin) / 2
 
+    # An angle getter for the dashboard
     def getAngle(self):
         return self.s.angle
 
     def calibrate(self):
+        # A simple calibration function. Some of part attachments aren't very firm, and it can be useful
+        # to be able to calibrate them to zero
         print('Moving to Zero')
         self.s.angle = 0
         sleep(1)

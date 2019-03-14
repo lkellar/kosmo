@@ -26,6 +26,7 @@ def initFace():
         print('No config found, an empty face has been created')
 
 
+# Main Dashboard
 @app.route('/')
 def index():
     return render_template('index.html', face=f, PartSorter=PartSorter)
@@ -48,22 +49,28 @@ def addParts():
 
 @app.route('/control', methods=['POST'])
 def controlParts():
+    # A form can be passed as a multipart or json
     if request.is_json:
         commands = request.get_json()
     else:
         commands = request.form
 
+    # Bulk requests are also supported. If a user submits a json array with command objects inside,
+    # it'll handle them all
     if type(commands) == list:
         for i in commands:
             processCommand(i)
     else:
         processCommand(commands)
 
+    # After a control request, the current angle status for all servos is returned
+    # This is useful for the dashboard, so that all angles are updated, regardless of where they were changed
     return jsonify({key: value.getAngles() for key, value in f.fetchParts().items()})
 
 
 @app.route('/save')
 def saveConfig():
+    # Saves the current setup into a config file outside of the src folder
     config = [i.getConfig() for i in f.fetchParts().values()]
     with open(configPath, 'w') as file:
         json.dump(config, file)
@@ -72,19 +79,24 @@ def saveConfig():
 
 
 def processCommand(command: dict):
+    # Takes a command object and processes it
     part = f.fetchParts()[command['part']]
     if command['axis'].lower() == 'x':
         servo = part.x
     elif command['axis'].lower() == 'y':
         servo = part.y
     else:
+        # If the axis arg isn't x or y, something is wrong
         raise InvalidUsage("Axis must be 'X' or 'Y'")
 
+    # if the cmd is a mid, max, or min, no angle is needed, and we can just call the corresponding function
     if command['cmd'] in ['mid', 'max', 'min']:
         getattr(servo, command['cmd'])()
     elif command['cmd'] == 'set':
+        # if the cmd is set, we set the servo to the angle provided
         servo.setPosition(float(command['angle']))
     else:
+        # and of course, if an invalid cmd is passed, throw an error
         raise InvalidUsage("cmd must be 'mid', 'max', 'min' or 'set'!")
 
 
@@ -107,6 +119,7 @@ class PartSorter:
             part = self.parts.get(name)
             self.current += 1
             if not part:
+                # if a part isn't found, just continue on to the next name in alignment
                 return self.__next__()
             else:
                 return name, part
@@ -114,6 +127,7 @@ class PartSorter:
 
 class InvalidUsage(Exception):
     status_code = 400
+    # Basic API Exception thrown at the user
 
     def __init__(self, message, status_code=None, payload=None):
         Exception.__init__(self)
@@ -130,6 +144,7 @@ class InvalidUsage(Exception):
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
+    # Basic error handler for the InvalidUsage
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response

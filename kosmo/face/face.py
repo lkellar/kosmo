@@ -10,6 +10,8 @@ class Face:
     leftEyebrow, rightEyebrow = None, None
 
     def addPart(self, config):
+        # A generic add part function, so parts can be added programmatically, if, say, loading from config
+        # They basically just remove the part param, and pass
         part = config.pop('part')
         if part == "eye":
             self.addEye(**config)

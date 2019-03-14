@@ -18,7 +18,6 @@ function submitForm(formId, cmd='set') {
 }
 
 function updateAngles(angles) {
-
     for (const [key, value] of Object.entries(angles)) {
         for (const [axis, angle] of Object.entries(value)) {
             const angleInput = document.getElementById(`${key}-${axis}-angle`);
