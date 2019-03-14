@@ -9,10 +9,10 @@ class Mouth:
     def __init__(self, pin: int, yMin: float = yMin, yMax: float = yMax):
         self.y = BaseServo(pin, yMin, yMax)
 
-    def close(self):
+    def min(self):
         self.y.min()
 
-    def open(self):
+    def max(self):
         self.y.max()
 
     def setY(self, angle: float):
