@@ -123,11 +123,13 @@ Specifically, it saves to `config.json` at the root of the repo dir. It also ret
 
 ## Face Sub-Library
 
-The Face (`kosmo/face/`) module is currently the only way to control the face. 
+The Face (`kosmo/face/`) module is the underlying library that controls the face.
 
 A Face instance takes in part parameters as an input, and creates new parts that can be controlled. See example below
 
-```
+```python
+from kosmo.face import Face
+
 f = Face()
 
 f.addEye('left', 2, 3)
