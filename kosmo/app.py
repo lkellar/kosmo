@@ -35,9 +35,14 @@ def index():
 @app.route('/add', methods=['POST'])
 def addParts():
     global f
-    # A config is passed as a json body, so we're just going to pass that right along
-    config = request.get_json()
+    # A form can be passed as a multipart or json
+    if request.is_json:
+        config = request.get_json()
+    else:
+        config = request.form
 
+    # Bulk requests are also supported. If a user submits a json array with command objects inside,
+    # it'll handle them all
     if type(config) == list:
         for i in config:
             f.addPart(i)

@@ -8,6 +8,119 @@ For development, clone the repository and install dependencies via pipenv
 
 This project runs on python3.5, because the Raspberry Pi doesn't play well with newer versions.
 
+## API
+A Flask server, that controls the robot, and runs the dashboard
+
+#### `/` (GET)
+Returns the dashboard. Meant to be accessed via a web browser. 
+
+![Dashboard Example](screenshots/dashboard.png)
+
+Each "bubble" has a part, and all the servos related to the part are available for configuration. Each servo allows for its angle to be changed, by entering a direct value, or hitting the Min, Mid, or Max buttons
+
+When controlling a servo, a `/control` request is sent, and all the angles are updated with the correct value
+
+#### `/add` (POST)
+An endpoint to add parts to the face instance
+
+Arguments can be passed via multipart form or JSON
+
+##### Arguments
+   * `part` (String): The type of part to add. Must be `eye`, `mouth`, or `eyebrow`
+   *  Any of the parameters required for a specific part. See the appropriate part in the Face Sub-Library section below.
+   
+See Example Below
+
+```json
+[
+  {
+    "part": "eye",
+    "side": "left",
+    "xPin": 2,
+    "yPin": 3
+  },
+  {
+    "part": "eye",
+    "side": "right",
+    "xPin": 20,
+    "yPin": 21,
+    "yMax": 90
+  },
+  {
+    "part": "mouth",
+    "pin": 19,
+    "yMax": 0,
+    "yMin": -80
+  }
+]
+```
+
+#### `/control` (POST)
+An endpoint to control specific servos/parts
+
+Arguments can be passed via multipart form or JSON
+
+##### Arguments
+   * `part` (string): The part the servo belongs to. Must be `leftEye`, `rightEye`, `mouth`, `leftEyebrow`, or `rightEyebrow`
+   * `axis` (string): The axis the servo controls. Must be `x` or `y`
+   * `cmd` (string): The command to be run. Must be `min`, `mid`, `max`, or `set`. `min`, `mid`, and `max` set the servo to their minimum, middle, or maximum position. `set` sets the servo's angle to the value of the `angle` param.
+   * `angle` (string) (optional): The angle to set the servo to. Only required if `cmd` is `set`.
+
+##### Response
+This endpoint responds with the current angle position for all servos, which can be used to update the dashboard. An example is shown below.
+
+```json
+{
+  "leftEye": {
+    "x": 50,
+    "y": -90
+  },
+  "mouth": {
+    "y": -80
+  },
+  "rightEye": {
+    "x": -50,
+    "y": 90
+  }
+}
+```
+
+#### `/save` (GET)
+Saves the current setup to a config file and is auto-loaded on start.
+
+Specifically, it saves to `config.json` at the root of the repo dir. It also returns the current setup as a response to the request. See example below.
+
+```json
+[
+  {
+    "part": "mouth",
+    "pin": 19,
+    "yMax": 0,
+    "yMin": -80
+  },
+  {
+    "part": "eye",
+    "side": "left",
+    "xMax": 50,
+    "xMin": -50,
+    "xPin": 2,
+    "yMax": 50,
+    "yMin": -90,
+    "yPin": 3
+  },
+  {
+    "part": "eye",
+    "side": "right",
+    "xMax": 50,
+    "xMin": -50,
+    "xPin": 20,
+    "yMax": 90,
+    "yMin": -90,
+    "yPin": 21
+  }
+]
+```
+
 ## Face Sub-Library
 
 The Face (`kosmo/face/`) module is currently the only way to control the face. 
@@ -82,7 +195,6 @@ Optional Parameters:
 
 ### addEyebrow()
 Adds a [Eyebrow](#eyebrow) instance to the Face
-
 
 Required Parameters:
 * `side` (string): Designates which eyebrow to be controlled. Only "left" or "right" is a valid parameter.
