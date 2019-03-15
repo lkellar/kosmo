@@ -225,8 +225,10 @@ Available Functions:
 * `setX(angle: float)`: Pass a float between the xMin and xMax to set the X angle.
 * `setY(angle: float)`: Pass a float between the yMin and yMax to set the Y angle.
 * `x.max() or y.max()`: Sets the corresponding servo's angle to the maximum.
-* `x.min() or y.min()`: Sets the corresponding servo's angle to the mid point.
+* `x.min() or y.min()`: Sets the corresponding servo's angle to the minimum.
 * `x.mid() or y.mid()`: Sets the corresponding servo's angle to the midpoint.
+* `getAngles()`: Returns the angle status of all servos.
+* `getConfig()`: Returns the configuration of the eyebrow, so it can be replicated in the future.
 
 ### Mouth
 
@@ -238,9 +240,12 @@ Optional Parameters:
 * `yMax` (float): The maximum angle of the Y Axis
 
 Available Functions:
-* `open()`: Opens the mouth servo to the maximum angle
-* `close()`: Closes the mouth servo to the minimum angle
-* `setY(angle: float)`: Pass a float between yMin and yMax to set the Y angle
+* `max()`: Sets the mouth servo to the maximum angle.
+* `mid()`: Sets the mouth servo to the mid point.
+* `min()`: Sets the mouth servo to the minimum angle.
+* `setY(angle: float)`: Pass a float between yMin and yMax to set the Y angle.
+* `getAngles()`: Returns the angle status of all servos.
+* `getConfig()`: Returns the configuration of the eyebrow, so it can be replicated in the future.
 
 ### Eyebrow
 
@@ -254,8 +259,11 @@ Optional Parameters:
 
 Available Functions:
 * `max()`: Sets the eyebrow servo to the maximum angle
+* `mid()`: Sets the eyebrow servo to the mid point.
 * `min()`: Sets the eyebrow servo to the minimum angle
-* `setY(angle: float)` Pass a float between yMin and yMax to set the Y angle.
+* `setY(angle: float)`: Pass a float between yMin and yMax to set the Y angle.
+* `getAngles()`: Returns the angle status of all servos.
+* `getConfig()`: Returns the configuration of the eyebrow, so it can be replicated in the future.
 
 ## Servo Calibration
 Any servo motor can be directly accessed via syntax like `myFace.leftEye.x` or `myFace.mouth.y`
