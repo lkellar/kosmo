@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 from kosmo.face import Face
+from kosmo.audio import AudioProcessor
 from os import path
 import json
 
