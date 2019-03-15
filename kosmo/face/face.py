@@ -10,6 +10,8 @@ class Face:
     leftEyebrow, rightEyebrow = None, None
 
     def addPart(self, config):
+        # A generic add part function, so parts can be added programmatically, if, say, loading from config
+        # They basically just remove the part param, and pass
         part = config.pop('part')
         if part == "eye":
             self.addEye(**config)
@@ -24,7 +26,6 @@ class Face:
     def addEye(self, side: str, xPin: int, yPin: int, xMin: float = Eye.xMin, xMax: float = Eye.xMax,
                  yMin: float = Eye.yMin, yMax: float = Eye.yMax):
         args = locals()
-        del args['side']
         del args['self']
         if side == 'left':
             self.leftEye = Eye(**args)
@@ -40,7 +41,6 @@ class Face:
 
     def addEyebrow(self, side: str, pin: int, yMin: float = Eyebrow.yMin, yMax: float = Eyebrow.yMax):
         args = locals()
-        del args['side']
         del args['self']
         if side == 'left':
             self.leftEyebrow = Eyebrow(**args)
@@ -48,3 +48,7 @@ class Face:
             self.rightEyebrow = Eyebrow(**args)
         else:
             raise TypeError('Side must be "left" or "right"!')
+
+    def fetchParts(self):
+        # This function returns all the face parts that have been defined
+        return vars(self)

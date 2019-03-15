@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kosmo Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename="style.css") }}">
+</head>
+{% macro servoDetails(servo, axis, part) %}
+    <div>
+    <form method="POST" id="{{ part }}-{{ axis }}" onsubmit="return submitForm('{{ part }}-{{ axis }}')">
+        <h3>{{ axis|upper }} Axis</h3>
+        <input type="hidden" name="part" value="{{ part }}">
+        <input type="hidden" name="axis" value="{{ axis|lower }}">
+        <label><strong>Current Angle:</strong>
+            <input onsubmit="return submitForm(`{{ part }}-{{ axis }}`)" id="{{ part }}-{{ axis }}-angle" class="angle" name="angle" min="{{ servo.angMin }}" max="{{ servo.angMax }}" type="number" value="{{ servo.getAngle() }}"></label>
+        <p><strong>Pin:</strong> {{ servo.pin }}</p>
+        <p><strong>Maximum Angle:</strong> {{servo.angMax }}</p>
+        <p><strong>Minimum Angle:</strong> {{ servo.angMin }}</p>
+        <div class="controls">
+            <button type="button" onclick="return submitForm('{{ part }}-{{ axis }}', cmd='min')">Min</button>
+            <button type="button" onclick="return submitForm('{{ part }}-{{ axis }}', cmd='mid')">Mid</button>
+            <button type="button" onclick="return submitForm('{{ part }}-{{ axis }}', cmd='max')">Max</button>
+        </div>
+    </form>
+    </div>
+{%- endmacro %}
+<body>
+<main>
+    <h1>Kosmo Dashboard</h1>
+    {% if face.fetchParts()|length == 0 %}
+        <div class="surround">
+            <h2>No Parts Created Yet</h2>
+        </div>
+    {% else %}
+        {% for key, value in PartSorter(face.fetchParts()) %}
+            <div class="surround" id="{{ key }}">
+                <h2>{{ key }}</h2>
+                <div class="details">
+                    {% if value.x is defined %}
+                        {{ servoDetails(value.x, 'x', key)}}
+                    {% endif %}
+                    {{ servoDetails(value.y, 'y', key)}}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</main>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
