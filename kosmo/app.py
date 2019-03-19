@@ -37,18 +37,15 @@ def index():
 def addParts():
     global f
     # A form can be passed as a multipart or json
-    if request.is_json:
-        config = request.get_json()
-    else:
-        config = request.form
+    config = fetchBody(request)
 
     # Bulk requests are also supported. If a user submits a json array with command objects inside,
     # it'll handle them all
     if type(config) == list:
         for i in config:
-            f.addPart(i)
+            f.addPart(dict(i))
     else:
-        f.addPart(config)
+        f.addPart(dict(config))
 
     return '200 OK'
 
@@ -56,10 +53,7 @@ def addParts():
 @app.route('/control', methods=['POST'])
 def controlParts():
     # A form can be passed as a multipart or json
-    if request.is_json:
-        commands = request.get_json()
-    else:
-        commands = request.form
+    commands = fetchBody(request)
 
     # Bulk requests are also supported. If a user submits a json array with command objects inside,
     # it'll handle them all
@@ -83,6 +77,27 @@ def saveConfig():
 
     return jsonify(config)
 
+
+@app.route('/audio', methods=['POST'])
+def playAudio():
+    # A form can be passed as a mutlipart or json
+    commands = fetchBody(request)
+    if not f.mouth:
+        raise InvalidUsage('No Mouth available to control')
+
+    # This is not sustainable, a global AP is needed
+    ap = AudioProcessor(commands['filename'], f.mouth)
+    ap.process()
+
+    return '200 OK'
+
+
+def fetchBody(r: request):
+    # A form can be passed as a multipart or json
+    if r.is_json:
+        return r.get_json()
+    else:
+        return r.form
 
 def processCommand(command: dict):
     # Takes a command object and processes it

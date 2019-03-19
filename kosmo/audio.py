@@ -37,12 +37,13 @@ class AudioProcessor:
             stream.write(data)
             data = wf.readframes(self.CHUNK)
             rmsThing = rms(data, 2)
-            print(rmsThing)
             if rmsThing > last + deviationValue and iteration - lastUpper > howSoon:
                 lastUpper = iteration
+                print('MIN')
                 self.mouth.yMin()
             elif rmsThing < last - deviationValue and iteration - lastDowner > howSoon:
                 lastDowner = iteration
+                print('MAX')
                 self.mouth.yMax()
 
             last = rmsThing
