@@ -1,4 +1,5 @@
 from .servo import BaseServo
+from ..audio.process import AudioProcessor
 
 
 class Mouth:
@@ -7,6 +8,7 @@ class Mouth:
 
     def __init__(self, pin: int, yMin: float = yMin, yMax: float = yMax):
         self.y = BaseServo(pin, yMin, yMax)
+        self.ap = AudioProcessor(self)
 
     def min(self):
         self.y.min()

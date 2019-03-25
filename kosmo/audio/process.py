@@ -3,24 +3,39 @@
 import pyaudio
 import wave
 from audioop import rms
-from kosmo.face import Mouth
+from . import _espeak
 
 class AudioProcessor:
-    def __init__(self, filename, mouth: Mouth):
+    def __init__(self, mouth):
         self.CHUNK = 1024
-        self.filename = filename
         self.deviation = 1000
         self.mouth = mouth
 
-    def process(self):
-        wf = wave.open(self.filename, 'rb')
+        rate =_espeak.Initialize(_espeak.AUDIO_OUTPUT_RETRIEVAL, 1000)
+        if rate == -1:
+            raise RuntimeError("Couldn't initialize espeak")
+
+        _espeak.SetSynthCallback(self.process)
+
+        text = 'This is a test sentence'
+        _espeak.Synth(text, flags=_espeak.ENDPAUSE)
+
+    def process(self, wav, numsample, events):
+        print()
+        print(type(wav))
+        print()
+        print(numsample)
+        print()
+        print(events)
+        print()
+        wf = wave.open(wav)
 
         p = pyaudio.PyAudio()
 
         # open stream (2)
         stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
                         channels=wf.getnchannels(),
-                        rate=wf.getframerate(),
+                        rate=_espeak.RATE,
                         output=True)
 
         # read data

@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-from kosmo.face import Face
-from kosmo.audio import AudioProcessor
+from .face import Face
 from os import path
 import json
 
@@ -38,6 +37,8 @@ def addParts():
     global f
     # A form can be passed as a multipart or json
     config = fetchBody(request)
+
+    print(config)
 
     # Bulk requests are also supported. If a user submits a json array with command objects inside,
     # it'll handle them all
@@ -85,10 +86,6 @@ def playAudio():
     if not f.mouth:
         raise InvalidUsage('No Mouth available to control')
 
-    # This is not sustainable, a global AP is needed
-    ap = AudioProcessor(commands['filename'], f.mouth)
-    ap.process()
-
     return '200 OK'
 
 
@@ -97,7 +94,7 @@ def fetchBody(r: request):
     if r.is_json:
         return r.get_json()
     else:
-        return r.form
+        return r.form.to_dict(flat=True)
 
 def processCommand(command: dict):
     # Takes a command object and processes it
