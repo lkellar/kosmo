@@ -9,6 +9,7 @@ class AudioProcessor:
     def __init__(self, mouth):
         self.CHUNK = 256
         self.mouth = mouth
+        self.p = pyaudio.PyAudio()
 
     def speak(self, text, angry=False):
         voice = 'en-french' if angry else 'english-us'
@@ -22,10 +23,8 @@ class AudioProcessor:
     def process(self, wav):
         wf = wave.open(wav)
 
-        p = pyaudio.PyAudio()
-
         # open stream (2)
-        stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+        stream = self.p.open(format=self.p.get_format_from_width(wf.getsampwidth()),
                         channels=wf.getnchannels(),
                         rate=wf.getframerate(),
                         output=True)
@@ -60,6 +59,3 @@ class AudioProcessor:
         # stop stream (4)
         stream.stop_stream()
         stream.close()
-
-        # close PyAudio (5)
-        p.terminate()

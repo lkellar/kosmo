@@ -107,7 +107,7 @@ def fetchBody(r: request):
 def processCommand(command: dict):
     # This allows the special speak command to jump the line!
     if command['cmd'] == 'speak':
-        f.mouth.speak(command['text'], True if command['angry'] else False)
+        f.mouth.speak(command['text'], True if 'angry' in command else False)
         return
 
     # Takes a command object and processes it

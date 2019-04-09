@@ -41,13 +41,13 @@
                     {% endif %}
                     {{ servoDetails(value.y, 'y', key)}}
                     {% if key == 'mouth' %}
-                        <div>
+                        <div id="speak" class="details">
                         <form method="POST" id="{{ key }}-speak" onsubmit="return submitForm('{{ part }}-speak')">
-                            <input hidden="hidden" type="hidden" value="speak">
+                            <input hidden="hidden" type="hidden" name="cmd" value="speak">
                             <label><strong>Speak:</strong>
-                            <input onsubmit="return submitForm('{{ key }}-speak')" maxlength="280" type="text" name="text"></label>
+                            <input id="speak-input" maxlength="280" type="text" name="text"></label>
                             <label><strong>French Voice:</strong>
-                            <input onsubmit="submitForm('{{ key }}-speak')" type="checkbox" name="angry"></label>
+                            <input type="checkbox" name="angry"></label>
                             <button onclick="return submitForm('{{ key }}-speak')">Speak!</button>
                         </form>
                         </div>
