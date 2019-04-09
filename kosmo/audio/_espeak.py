@@ -4,6 +4,8 @@ Gary Bishop
 July 2007
 Modified October 2007 for the version 2 interface to espeak and more pythonic interfaces
 
+Modified April 2019 by Lucas Kellar to work on macOS as well.
+
 Free for any use.
 '''
 
@@ -12,6 +14,7 @@ import ctypes
 from ctypes import cdll, c_int, c_char_p, c_wchar_p, POINTER, c_short, c_uint, c_long, c_void_p
 from ctypes import CFUNCTYPE, byref, Structure, Union, c_wchar, c_ubyte, c_ulong
 import time
+import sys
 
 def cfunc(name, dll, result, *args):
     '''build and apply a ctypes prototype complete with parameter flags'''
@@ -22,7 +25,15 @@ def cfunc(name, dll, result, *args):
         aflags.append((arg[2], arg[0]) + arg[3:])
     return CFUNCTYPE(result, *atypes)((name, dll), tuple(aflags))
 
-dll = cdll.LoadLibrary('libespeak.so.1')
+
+if sys.platform == 'Linux':
+    speakLib = 'libespeak.so.1'
+elif sys.platform == 'darwin':
+    speakLib = 'libespeak.dylib'
+else:
+    raise RuntimeError('OS must be macOS or Linux')
+
+dll = cdll.LoadLibrary(speakLib)
 
 # constants and such from speak_lib.h
 

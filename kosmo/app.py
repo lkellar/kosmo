@@ -9,10 +9,12 @@ app = Flask(__name__, static_folder='../static', static_url_path='/static',
 f = Face()
 currentDir = path.dirname(path.realpath(__file__))
 configPath = path.join(currentDir, '../', 'config.json')
+config = []
 
 
 @app.before_first_request
 def initFace():
+    global config
     # Checks to see if a config.json exists, and if so, creates a bot from it
     if path.exists(configPath):
         print('Config Found! Creating Face from config')
@@ -20,8 +22,9 @@ def initFace():
         with open(configPath, 'r') as file:
             config = json.load(file)
 
-        for i in config:
-            f.addPart(i)
+        if 'parts' in config:
+            for i in config['parts']:
+                f.addPart(i)
     else:
         print('No config found, an empty face has been created')
 
@@ -36,17 +39,15 @@ def index():
 def addParts():
     global f
     # A form can be passed as a multipart or json
-    config = fetchBody(request)
-
-    print(config)
+    parts = fetchBody(request)
 
     # Bulk requests are also supported. If a user submits a json array with command objects inside,
     # it'll handle them all
-    if type(config) == list:
-        for i in config:
+    if type(parts) == list:
+        for i in parts:
             f.addPart(dict(i))
     else:
-        f.addPart(dict(config))
+        f.addPart(dict(parts))
 
     return '200 OK'
 
@@ -71,20 +72,26 @@ def controlParts():
 
 @app.route('/save')
 def saveConfig():
+    global config
     # Saves the current setup into a config file outside of the src folder
-    config = [i.getConfig() for i in f.fetchParts().values()]
+    config['parts'] = [i.getConfig() for i in f.fetchParts().values()]
     with open(configPath, 'w') as file:
         json.dump(config, file)
 
     return jsonify(config)
 
 
-@app.route('/audio', methods=['POST'])
-def playAudio():
+@app.route('/speak', methods=['POST'])
+def speakAudio():
     # A form can be passed as a mutlipart or json
     commands = fetchBody(request)
     if not f.mouth:
         raise InvalidUsage('No Mouth available to control')
+    if 'text' not in f.mouth:
+        raise InvalidUsage('Text argument not found')
+    if 'angry' not in f.mouth:
+        commands['angry'] = False
+    f.mouth.speak(commands['text'], commands['angry'])
 
     return '200 OK'
 
@@ -96,7 +103,13 @@ def fetchBody(r: request):
     else:
         return r.form.to_dict(flat=True)
 
+
 def processCommand(command: dict):
+    # This allows the special speak command to jump the line!
+    if command['cmd'] == 'speak':
+        f.mouth.speak(command['text'], True if command['angry'] else False)
+        return
+
     # Takes a command object and processes it
     part = f.fetchParts()[command['part']]
     if command['axis'].lower() == 'x':

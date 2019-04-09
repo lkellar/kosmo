@@ -1,5 +1,5 @@
 from .servo import BaseServo
-from ..audio.process import AudioProcessor
+from kosmo.audio.audio import AudioProcessor
 
 
 class Mouth:
@@ -26,3 +26,6 @@ class Mouth:
     def getAngles(self):
         # Returns the angles of all servos for displaying on the dashboard
         return {'y': self.y.getAngle()}
+
+    def speak(self, text, angry=False):
+        self.ap.speak(text, angry)
