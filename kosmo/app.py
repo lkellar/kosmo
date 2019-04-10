@@ -89,9 +89,9 @@ def speakAudio():
         raise InvalidUsage('No Mouth available to control')
     if 'text' not in f.mouth:
         raise InvalidUsage('Text argument not found')
-    if 'angry' not in f.mouth:
-        commands['angry'] = False
-    f.mouth.speak(commands['text'], commands['angry'])
+    if 'french' not in f.mouth:
+        commands['french'] = False
+    f.mouth.speak(commands['text'], commands['french'])
 
     return '200 OK'
 
@@ -107,7 +107,7 @@ def fetchBody(r: request):
 def processCommand(command: dict):
     # This allows the special speak command to jump the line!
     if command['cmd'] == 'speak':
-        f.mouth.speak(command['text'], True if 'angry' in command else False)
+        f.mouth.speak(command['text'], True if 'french' in command else False)
         return
 
     # Takes a command object and processes it

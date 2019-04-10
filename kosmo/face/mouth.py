@@ -27,5 +27,5 @@ class Mouth:
         # Returns the angles of all servos for displaying on the dashboard
         return {'y': self.y.getAngle()}
 
-    def speak(self, text, angry=False):
-        self.ap.speak(text, angry)
+    def speak(self, text, french=False):
+        self.ap.speak(text, french)

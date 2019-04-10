@@ -11,8 +11,8 @@ class AudioProcessor:
         self.mouth = mouth
         self.p = pyaudio.PyAudio()
 
-    def speak(self, text, angry=False):
-        voice = 'en-french' if angry else 'english-us'
+    def speak(self, text, french=False):
+        voice = 'en-french' if french else 'english-us'
         wav = self.generate(text, voice)
         self.process(wav)
 
