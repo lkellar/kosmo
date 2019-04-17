@@ -73,12 +73,16 @@ button {
         font-size: xx-large;
     }
 
-    #speak {
-        margin-top: 2vh;
+    #mouth-speak {
+        margin: 2vh auto 0;
     }
 
     #speak input {
         margin: 2vh 1vw;
+    }
+
+    #speak button {
+        font-size: 70%;
     }
 }
 

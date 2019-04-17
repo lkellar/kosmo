@@ -45,10 +45,13 @@
                         <form method="POST" id="{{ key }}-speak" onsubmit="return submitForm('{{ part }}-speak')">
                             <input hidden="hidden" type="hidden" name="cmd" value="speak">
                             <label><strong>Speak:</strong>
-                            <input id="speak-input" maxlength="280" type="text" name="text"></label>
+                            <textarea onkeypress="textareaSubmit(this, event, '{{ key }}-speak')" id="speak-input" maxlength="280" rows="5" cols="25" name="text"></textarea></label><br>
                             <label><strong>French Voice:</strong>
                             <input type="checkbox" name="french"></label>
-                            <button onclick="return submitForm('{{ key }}-speak')">Speak!</button>
+                            <div id="speak-buttons">
+                                <button style="color: red;" onclick="return clearText('speak-input')">Clear</button>
+                                <button onclick="return submitForm('{{ key }}-speak')">Speak!</button>
+                            </div>
                         </form>
                         </div>
                     {% endif %}

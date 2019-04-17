@@ -25,3 +25,15 @@ function updateAngles(angles) {
         }
     }
 }
+
+function textareaSubmit(oToCheckField, oKeyEvent, formID) {
+    if (oKeyEvent.key === 'Enter') {
+        submitForm(formID);
+        oKeyEvent.preventDefault();
+    }
+}
+
+function clearText(id) {
+    document.getElementById(id).value = '';
+    return false;
+}
