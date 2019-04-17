@@ -121,6 +121,18 @@ Specifically, it saves to `config.json` at the root of the repo dir. It also ret
 ]
 ```
 
+#### `/speak` (POST)
+Takes text as input, and turns it into spoken audio, and moves the mouth.
+
+Arguments can be passed via multipart form or JSON
+
+##### Arguments
+   * `text` (string): Text to be spoken by the robot
+   * `french` (string): Either `true` or `false`, decides if the voice should be spoken in a French accent.
+
+##### Response
+If it works, it should respond `200 OK`
+
 ## Face Sub-Library
 
 The Face (`kosmo/face/`) module is the underlying library that controls the face.
