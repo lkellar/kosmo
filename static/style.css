@@ -67,10 +67,22 @@ button {
         font-size: 3vh;
     }
 
-    .angle {
+    .angle, #speak-input {
         height: 2vh;
         width: 7vw;
         font-size: xx-large;
+    }
+
+    #mouth-speak {
+        margin: 2vh auto 0;
+    }
+
+    #speak input {
+        margin: 2vh 1vw;
+    }
+
+    #speak button {
+        font-size: 70%;
     }
 }
 

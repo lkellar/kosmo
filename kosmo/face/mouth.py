@@ -1,4 +1,5 @@
 from .servo import BaseServo
+from kosmo.audio.audio import AudioProcessor
 
 
 class Mouth:
@@ -7,6 +8,7 @@ class Mouth:
 
     def __init__(self, pin: int, yMin: float = yMin, yMax: float = yMax):
         self.y = BaseServo(pin, yMin, yMax)
+        self.ap = AudioProcessor(self)
 
     def min(self):
         self.y.min()
@@ -24,3 +26,6 @@ class Mouth:
     def getAngles(self):
         # Returns the angles of all servos for displaying on the dashboard
         return {'y': self.y.getAngle()}
+
+    def speak(self, text, french=False):
+        self.ap.speak(text, french)
