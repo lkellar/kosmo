@@ -20,7 +20,7 @@ class Face:
         elif part == "eyebrow":
             self.addEyebrow(**config)
         else:
-            raise TypeError('Part type is invalid! Must be "eye", "mouth" or "eyebrow", not {}')
+            raise TypeError('Part type is invalid! Must be "eye", "mouth" or "eyebrow"')
 
     # Below are functions to add parts like Eyes or Mouths
     def addEye(self, side: str, xPin: int, yPin: int, xMin: float = Eye.xMin, xMax: float = Eye.xMax,
