@@ -1,0 +1,1 @@
+from kosmo.app import app

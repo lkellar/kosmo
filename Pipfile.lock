@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6006360ee1a9966c671ee9aa3cae79e8671deb360b638a25f77e1867c6e9cf98"
+            "sha256": "4e709f33397ef1da094c661363cba726f3454c0506086a631ba36df1d4977a86"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -91,6 +91,7 @@
                 "sha256:cd5df75523866410809ca100dc9681e301e3c27567cf498077e8551b6d20e42f",
                 "sha256:e249096428b3ae81b08327a63a485ad0878de3fb939049038579ac0ef61e17e7"
             ],
+            "index": "pypi",
             "version": "==1.1.1"
         },
         "pyaudio": {
